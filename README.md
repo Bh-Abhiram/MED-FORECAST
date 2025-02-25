@@ -1,1 +1,2 @@
-A Web Based Disease Prediction System with multiple input fields of various diseases
+A web-based disease prediction system that utilizes multiple input fields for various diseases.
+
