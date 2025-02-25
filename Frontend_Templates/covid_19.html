@@ -1,0 +1,136 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<style>
+  .container {
+    margin-top: 20px;
+  }
+
+  .display-3 {
+    color: #007bff;
+  }
+
+  .display-4 {
+    color: #28a745;
+  }
+
+  hr {
+    border-top: 2px solid #007bff;
+  }
+
+  .form-group label {
+    font-weight: bold;
+  }
+
+  .form-control {
+    border: 1px solid #ced4da;
+    border-radius: 0.25rem;
+  }
+
+  .btn-primary {
+    background-color: #007bff;
+    border: none;
+    border-radius: 0.25rem;
+  }
+
+  .btn-primary:hover {
+    background-color: #0056b3;
+  }
+
+  .btn-lg {
+    font-size: 1.25rem;
+    padding: 0.5rem 1rem;
+  }
+</style>
+
+<div class="container">
+  <div class="display-3 my-2 text-center">COVID-19 Symptoms Checker</div>
+  <hr />
+
+  {% if context %}
+  <div class="display-4 my-2 text-center">
+    {{ context }}
+  </div>
+  {% endif %}
+
+  <div class="mt-4">
+    <form class="row" method="POST" action="{% url 'covid_19' %}">
+      {% csrf_token %}
+      <div class="col-md-4">
+        <div class="form-group">
+          <label for="fever">Fever (0: No, 1: Yes)</label>
+          <input
+            type="number"
+            step=".00001"
+            class="form-control"
+            id="fever"
+            value="0"
+            name="fever"
+          />
+        </div>
+        <div class="form-group">
+          <label for="bodyPain">Body Pain (0: No, 1: Yes)</label>
+          <input
+            type="number"
+            step=".00001"
+            class="form-control"
+            id="bodyPain"
+            value="0"
+            name="bodyPain"
+          />
+        </div>
+        <div class="form-group">
+          <label for="age">Age</label>
+          <input
+            type="number"
+            step=".00001"
+            class="form-control"
+            id="age"
+            value="0"
+            name="age"
+          />
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="form-group">
+          <label for="runnyNose">Runny Nose (0: No, 1: Yes)</label>
+          <input
+            type="number"
+            step=".00001"
+            class="form-control"
+            id="runnyNose"
+            value="0"
+            name="runnyNose"
+          />
+        </div>
+        <div class="form-group">
+          <label for="diffBreath">Difficulty in Breathing (0: No, 1: Yes)</label>
+          <input
+            type="number"
+            step=".00001"
+            class="form-control"
+            id="diffBreath"
+            value="0"
+            name="diffBreath"
+          />
+        </div>
+        <div class="form-group">
+          <label for="infectionProb">Infection Probability (0-1)</label>
+          <input
+            type="number"
+            step=".00001"
+            class="form-control"
+            id="infectionProb"
+            value="0"
+            name="infectionProb"
+          />
+        </div>
+      </div>
+      <div class="col-md-4">
+        <button type="submit" class="btn-lg btn-block btn btn-primary mb-5">Submit</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+{% endblock %}

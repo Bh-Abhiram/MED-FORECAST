@@ -1,0 +1,482 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+    <!-- Bootstrap CSS -->
+    <link
+            rel="stylesheet"
+            href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+            integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+            crossorigin="anonymous"
+    />
+
+    <title>Med ForeCast</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        section.pricing {
+            background: linear-gradient(to right, #0072ff, #00c6ff); /* Updated gradient colors */
+        }
+
+        .pricing .card {
+            border: none;
+            border-radius: 1rem;
+            transition: max-height 0.5s ease-in-out, box-shadow 0.5s;
+            box-shadow: 0 0.5rem 1rem 0 rgba(55, 139, 104, 0.1);
+            max-height: 60px; /* Initially small */
+            overflow: hidden; /* Hide content */
+            cursor: pointer; /* Add cursor pointer */
+        }
+
+        .pricing .card.expanded {
+            max-height: 1000px; /* Expand to show content */
+            box-shadow: 0 0.5rem 1rem 0 rgba(0, 0, 0, 0.3);
+        }
+
+        .pricing hr {
+            margin: 1.5rem 0;
+        }
+
+        .pricing .card-title {
+            margin: 0.5rem 0;
+            font-size: 1.2rem;
+            letter-spacing: 0.1rem;
+            font-weight: bold;
+            text-decoration-color: rgb(234, 255, 0); /* Change the color here */
+        }
+
+        .pricing .card-price {
+            font-size: 3rem;
+            margin: 0;
+        }
+
+        .pricing .card-price .period {
+            font-size: 0.8rem;
+        }
+
+        .pricing ul li {
+            margin-bottom: 1rem;
+        }
+
+        .pricing .text-muted {
+            opacity: 0.7;
+        }
+
+        .pricing .btn {
+            font-size: 90%;
+            border-radius: 5rem;
+            letter-spacing: 0.1rem;
+            font-weight: bold;
+            padding: 1rem;
+            opacity: 0.7;
+            transition: all 0.2s;
+        }
+
+        .navbar {
+            transition: background-color 0.5s;
+        }
+
+        .jumbotron {
+            transition: background-size 0.5s, background-position 0.5s, background-color 0.5s;
+        }
+
+        .jumbotron:hover {
+            background-color: rgba(0, 123, 255, 0.1); /* Updated hover background color */
+        }
+    </style>
+</head>
+
+<body>
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <img src="../static/Background_Images/logo.png" alt="Logo" style="height: 30px; margin-right: 10px;">
+    <a class="navbar-brand" href="{% url 'home' %}" style="color : green;"><b>MED FORECAST</b></a>
+      <button
+          class="navbar-toggler"
+          type="button"
+          data-toggle="collapse"
+          data-target="#navbarNavAltMarkup"
+          aria-controls="navbarNavAltMarkup"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+  >
+      <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+      <div class="navbar-nav ml-auto">
+          <!-- Add style="color: black;" to each <a> tag -->
+            <a class="nav-item nav-link mr-3" id="heart-link" href="{% url 'heart' %}" style="color: rgb(153, 16, 16);">Heart Disease Prediction</a>
+            <a class="nav-item nav-link mr-3" id="diabetes-link" href="{% url 'diabetes' %}" style="color: grey;">Diabetes Prediction</a>
+            <a class="nav-item nav-link mr-3" id="breast-link" href="{% url 'breast' %}" style="color: brown;">Breast Cancer Prediction</a>
+            <a class="nav-item nav-link mr-3" id="bmi-link" href="{% url 'bmi' %}" style="color: green;">Body Mass Index(BMI)</a>
+            <a class="nav-item nav-link mr-3" id="blood-pressure-link" href="{% url 'blood_pressure' %}" style="color: orange;">Blood Pressure Prediction</a>
+            <a class="nav-item nav-link mr-3" id="covid-link" href="{% url 'covid_19' %}" style="color: red;">COVID-19 Prediction</a>
+            
+          <!-- End of style modification -->
+      </div>
+  </div>
+</nav>
+
+
+<style>
+    /* Base styles */
+    .jumbotron {
+        background-image: url('../static/Background_Images/Home.jpeg');
+        background-size: 100% auto;
+        background-position: center;
+        background-repeat: no-repeat;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        text-shadow: 1px 1px 2px black;
+        position: relative;
+    }
+
+    .jumbotron h1 {
+        margin-top: 50px; /* Add margin to the top of the title */
+    }
+    .navbar {
+        margin-top: 20px;
+    }
+
+    .navbar-menu {
+        list-style: none;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 15px;
+    }
+
+    .navbar-item {
+        position: relative; /* Ensure relative positioning for the box */
+    }
+
+    .navbar .nav-item.active {
+        background-color: #00c6ff;
+    }
+
+    .navbar-link {
+        display: block;
+        padding: 10px 20px;
+        text-decoration: none;
+        color: #007bff;
+        font-weight: bold;
+        transition: color 0.3s ease;
+        text-shadow: none;
+    }
+
+    .navbar-link:hover {
+        color: #0056b3;
+    }
+
+    /* Flip box styles */
+    .flip-box {
+        width: 200px;
+        height: 200px;
+        perspective: 1000px; /* Create a perspective view for the 3D effect */
+    }
+
+    .flip-box-inner {
+        width: 100%;
+        height: 100%;
+        transition: transform 0.5s; /* Smooth transition for flipping */
+        transform-style: preserve-3d; /* Preserve the 3D transformations */
+    }
+
+    .flip-box:hover .flip-box-inner {
+        transform: rotateY(180deg); /* Flip the box on hover */
+    }
+
+    .flip-box-front, .flip-box-back {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        backface-visibility: hidden; /* Hide the back face of the box */
+    }
+
+    .flip-box-front {
+        background-color: #bbb; /* Default background color for front face */
+        color: black;
+    }
+
+    .flip-box-back {
+        background-color: #555; /* Background color for back face */
+        color: white;
+        transform: rotateY(180deg); /* Initially hide the back face */
+    }
+
+    /* Preview image */
+    .preview-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+</style>
+</head>
+<body>
+    <div class="jumbotron">
+        <h1>Welcome to MED FORECAST</h1>
+        <p>Your trusted partner in predicting health risks</p>
+        <nav class="navbar">
+            <ul class="navbar-menu">
+                <li class="navbar-item heart-disease">
+                    <div class="flip-box">
+                        <div class="flip-box-inner">
+                            <div class="flip-box-front">
+                                <img src="{% static 'Background_Images/HeartDisease.jpeg' %}" alt="Heart Disease" class="preview-image">
+                            </div>
+                            <div class="flip-box-back">
+                                <a href="/heart/" class="navbar-link">Predict Heart Disease</a>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li class="navbar-item breast-cancer">
+                    <div class="flip-box">
+                        <div class="flip-box-inner">
+                            <div class="flip-box-front">
+                                <img src="{% static 'Background_Images/BreastCancer.jpeg' %}" alt="Breast Cancer" class="preview-image">
+                            </div>
+                            <div class="flip-box-back">
+                                <a href="/breast/" class="navbar-link">Predict Breast Cancer</a>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li class="navbar-item diabetes">
+                    <div class="flip-box">
+                        <div class="flip-box-inner">
+                            <div class="flip-box-front">
+                                <img src="{% static 'Background_Images/Diabetes.jpeg' %}" alt="Diabetes" class="preview-image">
+                            </div>
+                            <div class="flip-box-back">
+                                <a href="/diabetes/" class="navbar-link">Predict Diabetes</a>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li class="navbar-item blood-pressure">
+                    <div class="flip-box">
+                        <div class="flip-box-inner">
+                            <div class="flip-box-front">
+                                <img src="{% static 'Background_Images/BloodPressure.jpeg' %}" alt="Blood Pressure" class="preview-image">
+                            </div>
+                            <div class="flip-box-back">
+                                <a href="/blood_pressure/" class="navbar-link">Predict Blood Pressure</a>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li class="navbar-item covid-19">
+                    <div class="flip-box">
+                        <div class="flip-box-inner">
+                            <div class="flip-box-front">
+                                <img src="{% static 'Background_Images/Covid-19.jpeg' %}" alt="COVID-19" class="preview-image">
+                            </div>
+                            <div class="flip-box-back">
+                                <a href="/covid_19/" class="navbar-link">Predict COVID-19</a>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li class="navbar-item bmi-status">
+                    <div class="flip-box">
+                        <div class="flip-box-inner">
+                            <div class="flip-box-front">
+                                <img src="{% static 'Background_Images/BMI.jpeg' %}" alt="BMI Status" class="preview-image">
+                            </div>
+                            <div class="flip-box-back">
+                                <a href="/bmi/" class="navbar-link">Check BMI Status</a>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </nav>
+        
+    </div>
+
+    <script>
+        // Add event listeners for each flip box
+        document.querySelectorAll('.flip-box').forEach(function(flipBox) {
+            flipBox.addEventListener('mouseenter', function() {
+                this.classList.add('hover');
+            });
+
+            flipBox.addEventListener('mouseleave', function() {
+                this.classList.remove('hover');
+            });
+        });
+    </script>
+
+
+
+    <h1 class="display-5 text-center"><b></b></h1>
+    <br />
+</div>
+
+<h1 class="text-center"></h1>
+<p class="lead text-center" style="font-size: 20px">
+    <strong><b>
+        A specialized web app for predicting heart disease ❤️, breast cancer 🎗️, diabetes 🍬, blood pressure issues 💉, COVID-19 🦠, and assessing BMI status ⚖️.</b></strong>
+</p><br />
+
+
+<section class="pricing py-5">
+    <div class="container">
+        <div class="row">
+            <!--Free Tier -->
+            <div class="col-lg-4">
+                <div class="card mb-5 mb-lg-0">
+                    <div class="card-body">
+                        <h5 class="card-title text-muted text-uppercase text-center">HEART DISEASE PREDICTION</h5>
+                        <hr />
+                        <strong>Concerned about Heart Health?</strong><br /><br />
+                        <p class="text-danger">
+                            If you're experiencing symptoms like Shortness of Breath, Numbness or Weakness in Limbs, or Chest Pain or Discomfort, don't worry! Heart disease is serious, but we're here to help. Our services are free and available anytime, anywhere. Your health is our priority!
+                        </p>
+                        <a href="{% url 'heart' %}" class="btn btn-block btn-danger text-uppercase">KNOW YOUR HEART STATUS</a>
+                    </div>
+                </div>
+            </div>
+            <!-- Plus Tier -->
+            <div class="col-lg-4">
+                <div class="card mb-5 mb-lg-0">
+                    <div class="card-body">
+                        <h5 class="card-title text-muted text-uppercase text-center">DIABETES PREDICTION</h5>
+                        <hr />
+                        <p><strong>Concerned about Diabetes?</strong></p>
+                        <p class="text-danger">
+                            Diabetes, a serious health concern with no age barriers, can be managed through proper diet and exercise. We're here to assist you! If you notice symptoms like Blurred Vision, Frequent Urination, Increased Thirst, Hunger, or Fatigue, click below to check your diabetes status. Your health matters!
+                          </p>
+                          <a href="{% url 'diabetes' %}" class="btn btn-block btn-dark text-uppercase">KNOW YOUR DIABETES STATUS</a>
+                      </div>
+                  </div>
+              </div>
+              <!-- Pro Tier -->
+              <div class="col-lg-4">
+                  <div class="card">
+                      <div class="card-body">
+                          <h5 class="card-title text-muted text-uppercase text-center">BREAST CANCER PREDICTION</h5>
+                          <hr />
+                          <p><strong>Concerned about Breast Cancer?</strong></p>
+                          <p class="text-danger">
+                              Breast cancer is a prevalent issue among women globally, comprising most new cancer cases and deaths. Symptoms like a Lump in the Breast, Bloody Discharge from the Nipple, or Changes in Nipple or Breast Texture are common. But don't be alarmed; these symptoms are treatable with proper medication. Your health is our priority!
+                          </p>
+                          <a href="{% url 'breast' %}" class="btn btn-block btn-primary text-uppercase">KNOW BREAST CANCER STATUS</a>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </section>
+  <!-- BMI Prediction Section -->
+  <section class="pricing py-5">
+    <div class="container">
+        <div class="row">
+            <!-- BMI Prediction -->
+            <div class="col-lg-4">
+                <div class="card mb-5 mb-lg-0">
+                    <div class="card-body">
+                        <h5 class="card-title text-muted text-uppercase text-center">BODY MASS INDEX (BMI) PREDICTION</h5>
+                        <hr />
+                        <strong>Concerned about BMI?</strong><br /><br />
+                        <p class="text-danger">
+                            Body Mass Index (BMI) is a simple calculation using a person's height and weight. It is commonly used to classify underweight, overweight, and obesity in adults. Knowing your BMI can help you understand your overall health. Calculate your BMI below.
+                        </p>
+                        <a href="{% url 'bmi' %}" class="btn btn-block btn-success text-uppercase">CALCULATE YOUR BMI</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Blood Pressure Prediction -->
+            <div class="col-lg-4">
+                <div class="card mb-5 mb-lg-0">
+                    <div class="card-body">
+                        <h5 class="card-title text-muted text-uppercase text-center">BLOOD PRESSURE PREDICTION</h5>
+                        <hr />
+                        <strong>Concerned about Blood Pressure?</strong><br /><br />
+                        <p class="text-danger">
+                            High blood pressure, also known as hypertension, often has no symptoms but can lead to serious health issues like heart disease, stroke, and kidney failure if left untreated. We're here to help you understand and manage your blood pressure. Get started by checking your blood pressure status with our prediction tool.
+                        </p>
+                        <a href="{% url 'blood_pressure' %}" class="btn btn-block btn-info text-uppercase">KNOW YOUR BLOOD PRESSURE STATUS</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- COVID-19 Prediction -->
+            <div class="col-lg-4">
+                <div class="card mb-5 mb-lg-0">
+                    <div class="card-body">
+                        <h5 class="card-title text-muted text-uppercase text-center">COVID-19 PREDICTION</h5>
+                        <hr />
+                        <strong>Concerned about COVID-19?</strong><br /><br />
+                        <p class="text-danger">
+                            COVID-19, caused by the novel coronavirus, has impacted millions worldwide. Early detection and proper precautions are crucial to containing the spread of the virus. If you're experiencing symptoms like fever, cough, or difficulty breathing, use our prediction tool to assess your COVID-19 risk.
+                        </p>
+                        <a href="{% url 'covid_19' %}" class="btn btn-block btn-warning text-uppercase">KNOW YOUR COVID-19 STATUS</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+  
+  <!-- Optional JavaScript -->
+  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  <script>
+      document.addEventListener("DOMContentLoaded", function() {
+          const cards = document.querySelectorAll(".pricing .card");
+  
+          cards.forEach(card => {
+              card.addEventListener("mouseenter", () => {
+                  card.classList.add("expanded");
+              });
+  
+              card.addEventListener("mouseleave", () => {
+                  card.classList.remove("expanded");
+              });
+          });
+      });
+  </script>
+
+<!-- Place this script just before the closing </body> tag -->
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const currentPage = window.location.pathname;
+        const navItems = {
+            '/heart/': 'heart-link',
+            '/diabetes/': 'diabetes-link',
+            '/breast/': 'breast-link',
+            '/bmi/': 'bmi-link',
+            '/blood_pressure/': 'blood-pressure-link',
+            '/covid_19/': 'covid-link',
+        };
+
+        Object.keys(navItems).forEach(function (key) {
+            const navItem = document.getElementById(navItems[key]);
+            if (currentPage.includes(key)) {
+                navItem.style.color = 'blue'; // Change color for the active link
+            } 
+        });
+    });
+</script>
+  </body>
+  </html>

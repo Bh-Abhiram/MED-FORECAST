@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<style>
+  .container {
+    margin-top: 30px;
+  }
+  .form-group label {
+    font-weight: bold;
+  }
+  .form-control {
+    transition: box-shadow 0.3s, border-color 0.3s;
+  }
+  .form-control:focus {
+    box-shadow: 0 0 10px rgba(0, 123, 255, 0.5);
+    border-color: #007bff;
+  }
+  .btn-submit {
+    background-color: #ff4d4d !important;
+    border-color: #ff4d4d !important;
+    color: #fff !important; /* Ensure the text color is white for better visibility */
+  }
+  .btn-submit:hover {
+    background-color: #cc0000 !important;
+    border-color: #cc0000 !important;
+  }
+  .display-3 {
+    color: #007bff;
+    animation: fadeIn 2s ease-in-out;
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+</style>
+
+
+<div class="container">
+  <div class="display-3 my-2 text-center">Blood Pressure Prediction</div>
+  <hr />
+  {% if context %}
+  <div class="display-4 my-2 text-center">
+    {% if context %}
+    Your predicted blood pressure is {{ context }}.
+    {% endif %}
+  </div>
+  {% endif %}
+
+  <div class="mt-4">
+    <form class="row" method="POST" action="{% url 'blood_pressure' %}">
+      {% csrf_token %}
+      <div class="col-md-6">
+        <div class="form-group">
+          <label for="age">Age</label>
+          <input type="number" class="form-control" id="age" name="age" required />
+        </div>
+        <div class="form-group">
+          <label for="weight">Weight</label>
+          <input type="number" class="form-control" id="weight" name="weight" required />
+        </div>
+        <div class="form-group">
+          <label for="gender">Gender</label>
+          <select class="form-control" id="gender" name="gender" required>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="num_medications">Number of Medications</label>
+          <input type="number" class="form-control" id="num_medications" name="num_medications" required />
+        </div>
+        <div class="form-group">
+          <label for="num_lab_procedures">Number of Lab Procedures</label>
+          <input type="number" class="form-control" id="num_lab_procedures" name="num_lab_procedures" required />
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group">
+          <label for="diag_1">Diagnosis 1</label>
+          <input type="text" class="form-control" id="diag_1" name="diag_1" required />
+        </div>
+        <div class="form-group">
+          <label for="medical_specialty">Medical Specialty</label>
+          <input type="text" class="form-control" id="medical_specialty" name="medical_specialty" required />
+        </div>
+        <div class="form-group">
+          <label for="max_glu_serum">Max Glucose Serum</label>
+          <input type="text" class="form-control" id="max_glu_serum" name="max_glu_serum" required />
+        </div>
+        <div class="form-group">
+          <label for="A1Cresult">A1C Result</label>
+          <input type="text" class="form-control" id="A1Cresult" name="A1Cresult" required />
+        </div>
+        <div class="form-group">
+          <label for="admission_typeid">Admission Type ID</label>
+          <input type="number" class="form-control" id="admission_typeid" name="admission_typeid" required />
+        </div>
+        <div class="form-group">
+          <label for="time_in_hospital">Time in Hospital</label>
+          <input type="number" class="form-control" id="time_in_hospital" name="time_in_hospital" required />
+        </div>
+      </div>
+      <div class="col-md-12">
+        <button type="submit" class="btn btn-submit btn-block mt-3">Submit</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+{% endblock %}
